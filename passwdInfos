@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#
+#------------------------------------------------------------------------
+# Nome     : passwdInfos
+# Autor    : Drepz
+# Descricao: localiza usuarios e seus respectivos shells no sistema
+# Licenca  : GNU/GPL
+# Versao   : v0.1
+# Data     : 12/05/2025
+#------------------------------------------------------------------------
+#
+# Programa para verificar informações básicas do arquivo passwd de /etc/passwd
+#
+versao="0.1"
+
+msg_ajuda="[$(basename $0)] uso : localiza usuarios e seus respectivos terminais no sistema"
+
+msg_versao="$(basename $0) versão: $versao"
+
+case $1 in
+	-h| --help) echo $msg_ajuda
+		exit 0;;
+
+	-v| --version) echo $msg_versao
+		exit 0;;
+
+	*) if [ -n "$1" ];then
+		echo "opção invalida!"
+		exit 1
+		fi
+;;
+esac
+
+cat /etc/passwd | cut -d ":" -f 1,7 | cut -d "/" -f 1,2
+echo
+echo "$0"
