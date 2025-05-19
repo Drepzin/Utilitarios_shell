@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+#
+#------------------------------------------------------------------------
+# Nome     : regra_de_3
+# Autor    : Drepz
+# Descricao: Programa básico para resolução de regra de 3
+# Licenca  : GNU/GPL
+# Versao   : v0.1
+# Data     : 16/05/2025
+#------------------------------------------------------------------------
+# Programa basico para resolver problemas matematicos envolvendo regra de tres no formato de fração
+# Programa está na versãi beta 0.1 a proxima versão vai fortalecer a segurança em tempo de execução.
+
+unset operando
+msg_num_erro="erro! numero invalido"
+msg_opcao_invalida="escolha uma opção valida!"
+
+echo "Vamos começar pela primeira fração: "
+
+read -p "Numerador: " primeiro_numerador
+
+[ $primeiro_numerador -lt 1 ] && echo $msg_num_erro
+
+read -p "Denominador: " primeiro_denominador
+
+[ $primeiro_denominador -lt 1 ]  && echo $msg_num_erro
+
+
+echo "Vamos para a segunda fração: "
+
+echo "Escolha o que está faltando"
+
+select opt in Numerador Denominador;do
+	if [ -z "$opt" ] || [ -z "$REPLY" ] ; then
+	echo $msg_opcao_invalida
+	else
+	operando="$opt"
+	break;
+	fi
+done
+
+if [ $operando = "Numerador" ]; then
+	read -p "escolha o segundo denominador: " segundo_denominador
+	echo
+	echo "o resultado da sua equação é $(( primeiro_numerador * segundo_denominador / primeiro_denominador ))" 
+else
+	read -p "escolha o segundo numerador: " segundo_numerador
+	echo
+	echo "o resultado da sua equação é $(( primeiro_denominador * segundo_numerador / primeiro_numerador ))"
+fi
