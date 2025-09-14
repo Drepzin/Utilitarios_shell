@@ -1,0 +1,62 @@
+#!/bin/bash
+#
+#Script-name: Commiter;
+#Author     : Drepz;
+#Version    : 0.1v;
+#Date	    : 13/08/2025;
+#Manual     : Auto-commit for project with git;
+#
+version="0.1"
+
+argsError="number of arguments invalid the programm only had to receive one"
+
+filesMod="---------------------------------------------------------------------------------
+files modifed:"
+
+pushFiles="---------------------------------------------------------------------------------
+push files?:(y/n)"
+
+modFiles="---------------------------------------------------------------------------------
+saving modified files...
+---------------------------------------------------------------------------------"
+
+[ $# -ne 1 ] && echo $argsError && exit 1;
+
+case "$1" in
+	-h | --help)
+		echo "$(basename "$0"): [-v | --version, -h | --help]
+		command to auto commit in projects who already are connected with one repositorys
+		commiter cant make the first commit because he don't connect with repositorys, so you need to make the first commit and setup the env"; exit 0
+		;;
+	-v | --version)
+		echo "$version"; exit 0
+		;;
+	*)
+	if ls -a | grep -q '^\.git'; then
+		echo "$filesMod"
+		git status | grep -E '^\s+\w'
+		echo "---------------------------------------------------------------------------------"
+		echo
+		echo "$pushFiles"
+		read answer
+		echo "---------------------------------------------------------------------------------"
+		echo
+		if [  "$answer" == "y" ]; then
+			echo "$modFiles"
+			git add .
+			git commit -m "$1"
+			git push -u origin main
+			if [ $? -eq 0 ]; then
+				echo "files pulled."
+			else
+				echo "git error."; exit 0;
+			fi
+		else
+			echo "canceling opperation."; exit 0;
+		fi
+	else
+		echo "not a git project :(";  exit 1;
+	fi;;
+esac
+
+
